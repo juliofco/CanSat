@@ -8,7 +8,7 @@
 #define RFM95_INT 7
 
 #define RF95_FREQ 915.0
-
+//test
 // Singleton instance of the radio driver
 RH_RF95 rf95(RFM95_CS, RFM95_INT);
 
@@ -582,11 +582,3 @@ void printAttitude(float ax, float ay, float az, float mx, float my, float mz)
   Serial.println(roll, 2);
   Serial.print("Heading: "); Serial.println(heading, 2);*/
 }
-
-
-
-
-
-
-
-
