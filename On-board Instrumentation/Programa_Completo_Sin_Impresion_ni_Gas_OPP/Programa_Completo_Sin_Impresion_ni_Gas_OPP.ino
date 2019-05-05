@@ -18,7 +18,7 @@ RH_RF95 rf95(RFM95_CS, RFM95_INT);
 #include <LSM9DS1_Types.h>
 #include <SparkFunLSM9DS1.h>
 LSM9DS1 imu;
-//wacha esta madre
+
 #define LSM9DS1_M  0x1E // Would be 0x1C if SDO_M is LOW
 #define LSM9DS1_AG  0x6B // Would be 0x6A if SDO_AG is LOW
 
@@ -28,7 +28,7 @@ LSM9DS1 imu;
 static unsigned long lastPrint = 0; // Keep track of print time
 #define DECLINATION -8.58 // Declination (degrees) in Boulder, CO.
 
-
+/
 //////////////////////////////////////////////////////////////////////BMP (Barometro, temp int, alt) (MORADO) (SPI)
 #include <Adafruit_BMP280.h>
 #define BMP_CS A2 //CSB
