@@ -28,7 +28,7 @@ LSM9DS1 imu;
 static unsigned long lastPrint = 0; // Keep track of print time
 #define DECLINATION -8.58 // Declination (degrees) in Boulder, CO.
 
-/
+
 //////////////////////////////////////////////////////////////////////BMP (Barometro, temp int, alt) (MORADO) (SPI)
 #include <Adafruit_BMP280.h>
 #define BMP_CS A2 //CSB
