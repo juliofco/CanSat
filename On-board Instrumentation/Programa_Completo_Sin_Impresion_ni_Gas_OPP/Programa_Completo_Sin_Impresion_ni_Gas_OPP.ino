@@ -55,6 +55,8 @@ boolean usingInterrupt = false;
 void useInterrupt(boolean);
 
 
+String TODO;
+
 void setup() 
 {
    Serial.begin(9600);
@@ -69,7 +71,7 @@ void setup()
   GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);
   GPS.sendCommand(PGCMD_ANTENNA);
   useInterrupt(true);
-  delay(1000);
+  //delay(1000);
   // Ask for firmware version
  mySerial.println(PMTK_Q_RELEASE);
   
@@ -128,12 +130,12 @@ imu.settings.device.commInterface = IMU_MODE_I2C;
   delay(10);
  
   while (!rf95.init()) {
-    Serial.println("LoRa radio init failed");
+  //  Serial.println("LoRa radio init failed");
     while (1);
   }
   Serial.println("LoRa radio init OK!");
   if (!rf95.setFrequency(RF95_FREQ)) {
-    Serial.println("setFrequency failed");
+    //Serial.println("setFrequency failed");
     while (1);
   }
   //Serial.print("Set Freq to: "); Serial.println(RF95_FREQ);
@@ -217,7 +219,7 @@ float dia;
 float mes;
 float year;*/
 float latitud;
-float longitud;
+//float longitud;
 float altgps;
 
     /*  hora=GPS.hour;
@@ -276,14 +278,14 @@ float altgps;
  char LATITUD[20];
  //Serial.print("Sending ="); Serial.print(latitud); Serial.println(" Latitud");
  dtostrf(latitud, 6, 2, LATITUD);
- rf95.send((uint8_t *)LATITUD, 20);
- delay(227);
+ //rf95.send((uint8_t *)LATITUD, 20);
+ //delay(227);
   /////////////////////////Altitud
  char ALTGPS[20];
  //Serial.print("Sending ="); Serial.print(altgps); Serial.println(" Altitud de GPS");
  dtostrf(altgps, 6, 2, ALTGPS);
- rf95.send((uint8_t *)ALTGPS, 20);
- delay(227);
+ //rf95.send((uint8_t *)ALTGPS, 20);
+ //delay(227);
  
   ///////////////////////////////////////////////////IMU
 //  if ( imu.gyroAvailable() )
@@ -304,9 +306,9 @@ float altgps;
     printGyro();  // Print "G: gx, gy, gz"
     printAccel(); // Print "A: ax, ay, az"
     printMag();   // Print "M: mx, my, mz"
-    printAttitude(imu.ax, imu.ay, imu.az, 
-                 -imu.my, -imu.mx, imu.mz);
-    Serial.println();
+    /*printAttitude(imu.ax, imu.ay, imu.az, 
+                 -imu.my, -imu.mx, imu.mz);*/
+    //Serial.println();
     
     lastPrint = millis(); // Update lastPrint time
   }
@@ -321,20 +323,20 @@ float temper = TH02.ReadTemperature();
    /*Serial.println("Humidity: ");
    Serial.print(humidity);
    Serial.println("%\r\n");*/
-   delay(1000);
+  // delay(1000);
 
    //////////////////////Transmision TempHum 
   char TEMPER[20];
    //Serial.print("Sending = "); Serial.print(temper);Serial.println("*C");
    dtostrf(temper, 6, 2, TEMPER);
-   rf95.send((uint8_t *)TEMPER, 20);
-   delay(227);
+  // rf95.send((uint8_t *)TEMPER, 20);
+  // delay(227);
 
    char HUM[20];
    //Serial.print("Sending = "); Serial.print(humidity);Serial.println("%");
    dtostrf(humidity, 6, 2, HUM);
-   rf95.send((uint8_t *)HUM, 20);
-   delay(227);
+  // rf95.send((uint8_t *)HUM, 20);
+  // delay(227);
 
 
   ////////////////////////////////////////////////////////////////////////////////////////BMP
@@ -354,40 +356,60 @@ float temper = TH02.ReadTemperature();
      //Serial.println(" m");
 
     //Serial.println();
-   delay(1);//2000
+   //delay(1);//2000
    
  ////////////////////////////////////////////////////////////////////////////////////////Transmision BMP
  
  //delay(1);//3000
   //Serial.println("Transmitting..."); // Send a message to rf95_server
-  delay(227);
+ // delay(227);
   
   //Temperatura
   char Temperatura[8];
   //Serial.print("Sending = "); Serial.print(Temp);Serial.println("*C");
   dtostrf(Temp, 6, 2, Temperatura);
-  rf95.send((uint8_t *)Temperatura, 8);
-  delay(227);
+ // rf95.send((uint8_t *)Temperatura, 8);
+  //delay(227);
   
   //Presion
   char Presion[12];
   //Serial.print("Sending = "); Serial.print(Pres);Serial.println("Pa");
   dtostrf(Pres, 6, 2, Presion);
-  rf95.send((uint8_t *)Presion, 12);
-  delay(227);
+ // rf95.send((uint8_t *)Presion, 12);
+  //delay(227);
   
   //Altitud
   char Altitud[8];
   //Serial.print("Sending = "); Serial.print(Alt);Serial.println("m");
   dtostrf(Alt, 6, 2, Altitud);
-  rf95.send((uint8_t *)Altitud, 8);
-  delay(227);
+ // rf95.send((uint8_t *)Altitud, 8);
+  //delay(227);
+
+
+  TODO[0]=LATITUD;
+  TODO[1]=ALTGPS;
+  /*TODO[2]=GYROX;
+  TODO[3]=GYROY;
+  TODO[4]=GYROZ;
+  TODO[5]=ACCELX;
+  TODO[6]=ACCELY;
+  TODO[7]=ACCELZ;
+  TODO[8]=MAGX;
+  TODO[9]=MAGY;
+  TODO[10]=MAGZ;*/
+  TODO[11]=TEMPER;
+  TODO[12]=HUM;
+  TODO[13]=Temperatura;
+  //TODO[14]=Presion;
+  //TODO[15]=Altitud;
+  TODO[16]='\n';
+  //Serial.print(TODO);
   
   //////////////////////////////////////////////////////////////////////////////////Comunicacion
   rf95.waitPacketSent();
   uint8_t buf[RH_RF95_MAX_MESSAGE_LEN];
   uint8_t len = sizeof(buf);
-  delay(227);
+ // delay(227);
   
   //Serial.println("Waiting for reply...");
   if (rf95.waitAvailableTimeout(3000))
@@ -402,7 +424,7 @@ float temper = TH02.ReadTemperature();
     }
     else
     {
-      Serial.println("Receive failed");
+      //Serial.println("Receive failed");
     }
   }
   else
@@ -415,7 +437,7 @@ float temper = TH02.ReadTemperature();
 /////////////////////////////////////////////////VOIDS DE IMU
 void printGyro()
 {
-  Serial.print("G: ");
+  //Serial.print("G: ");
 #ifdef PRINT_CALCULATED
  /* Serial.print(imu.calcGyro(imu.gx), 2);
   Serial.print(", ");
@@ -436,20 +458,23 @@ void printGyro()
          Serial.print(gyrox);
          Serial.println(" grados X");*/
          dtostrf(gyrox, 6, 2, GYROX);
-         rf95.send((uint8_t *)GYROX, 20);
-         delay(227);
+         //rf95.send((uint8_t *)GYROX, 20);
+         //delay(227);
           /////////////gyroY
          char GYROY[20];
          //Serial.print("Sending ="); Serial.print(gyroy);Serial.println(" grados Y");
          dtostrf(gyroy, 6, 2, GYROY);
-         rf95.send((uint8_t *)GYROY, 20);
-         delay(227);
+         //rf95.send((uint8_t *)GYROY, 20);
+        // delay(227);
            /////////////gyroZ
          char GYROZ[20];
        //  Serial.print("Sending ="); Serial.print(gyroz);Serial.println(" grados Z");
          dtostrf(gyroz, 6, 2, GYROZ);
-         rf95.send((uint8_t *)GYROZ, 20);
-         delay(227);
+         //rf95.send((uint8_t *)GYROZ, 20);
+         //delay(227);
+         TODO[2]=GYROX;
+  TODO[3]=GYROY;
+  TODO[4]=GYROZ;
   
   
 #elif defined PRINT_RAW
@@ -463,7 +488,7 @@ void printGyro()
 
 void printAccel()
 {  
-  Serial.print("A: ");
+  //Serial.print("A: ");
 #ifdef PRINT_CALCULATED
   /*Serial.print(imu.calcAccel(imu.ax), 2);
   Serial.print(", ");
@@ -484,20 +509,23 @@ void printAccel()
          Serial.print(Accelx);
          Serial.println(" g X");*/
          dtostrf(Accelx, 6, 2, ACCELX);
-         rf95.send((uint8_t *)ACCELX, 20);
-         delay(227);
+        // rf95.send((uint8_t *)ACCELX, 20);
+         //delay(227);
           /////////////AccelY
          char ACCELY[20];
          //Serial.print("Sending ="); Serial.print(Accely);Serial.println(" g Y");
          dtostrf(Accely, 6, 2, ACCELY);
-         rf95.send((uint8_t *)ACCELY, 20);
-         delay(227);
+        // rf95.send((uint8_t *)ACCELY, 20);
+        // delay(227);
            /////////////AccelZ
          char ACCELZ[20];
          //Serial.print("Sending ="); Serial.print(Accelz);Serial.println(" g Z");
          dtostrf(Accelz, 6, 2, ACCELZ);
-         rf95.send((uint8_t *)ACCELZ, 20);
-         delay(227);
+        // rf95.send((uint8_t *)ACCELZ, 20);
+         //delay(227);
+         TODO[5]=ACCELX;
+  TODO[6]=ACCELY;
+  TODO[7]=ACCELZ;
          
 #elif defined PRINT_RAW 
  /* Serial.print(imu.ax);
@@ -511,7 +539,7 @@ void printAccel()
 
 void printMag()
 {  
-  Serial.print("M: ");
+  //Serial.print("M: ");
 #ifdef PRINT_CALCULATED
  /* Serial.print(imu.calcMag(imu.mx), 2);
   Serial.print(", ");
@@ -532,21 +560,25 @@ void printMag()
          Serial.print(Magx);
          Serial.println(" gauss X");*/
          dtostrf(Magx, 6, 2, MAGX);
-         rf95.send((uint8_t *)MAGX, 20);
-         delay(227);
+        // rf95.send((uint8_t *)MAGX, 20);
+         //delay(227);
           ////////////MagY
          char MAGY[20];
         // Serial.print("Sending ="); Serial.print(Magy);Serial.println(" gauss Y");
          dtostrf(Magy, 6, 2, MAGY);
-         rf95.send((uint8_t *)MAGY, 20);
-         delay(227);
+       //  rf95.send((uint8_t *)MAGY, 20);
+        // delay(227);
            /////////////MagZ
          char MAGZ[20];
         // Serial.print("Sending ="); Serial.print(Magz);Serial.println(" gauss Z");
          dtostrf(Magz, 6, 2, MAGZ);
-         rf95.send((uint8_t *)MAGZ, 20);
-         delay(227);
+       //  rf95.send((uint8_t *)MAGZ, 20);
+        // delay(227);
          
+         TODO[8]=MAGX;
+  TODO[9]=MAGY;
+  TODO[10]=MAGZ;
+  
 #elif defined PRINT_RAW
   /*Serial.print(imu.mx);
   Serial.print(", ");
@@ -556,7 +588,7 @@ void printMag()
 #endif
 }
 
-void printAttitude(float ax, float ay, float az, float mx, float my, float mz)
+/*void printAttitude(float ax, float ay, float az, float mx, float my, float mz)
 {
   float roll = atan2(ay, az);
   float pitch = atan2(-ax, sqrt(ay * ay + az * az));
@@ -580,5 +612,5 @@ void printAttitude(float ax, float ay, float az, float mx, float my, float mz)
   Serial.print(pitch, 2);
   Serial.print(", ");
   Serial.println(roll, 2);
-  Serial.print("Heading: "); Serial.println(heading, 2);*/
-}
+  Serial.print("Heading: "); Serial.println(heading, 2);
+}*/
