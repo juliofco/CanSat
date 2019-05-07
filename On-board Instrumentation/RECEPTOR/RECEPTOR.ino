@@ -9,13 +9,9 @@
 #define RFM95_CS 8
 #define RFM95_RST 4
 #define RFM95_INT 7
-//IMU
-#define BMP_CS A2
-#define BMP_SCK A3
-#define BMP_MISO A4
-#define BMP_MOSI A5 
 
-Adafruit_BMP280 bmp(BMP_CS, BMP_MOSI, BMP_MISO,  BMP_SCK);
+
+//Adafruit_BMP280 bmp(BMP_CS, BMP_MOSI, BMP_MISO,  BMP_SCK);
 
 // Frecuencia debe coincidir con elemisor 915.0 o 434.0
 #define RF95_FREQ 915.0
@@ -29,17 +25,17 @@ RH_RF95 rf95(RFM95_CS, RFM95_INT);
 void setup()
 {
 /////////////////////////////////////////////////////////////////////////////////////////IMU
-  Serial.begin(9600);
+  /*Serial.begin(9600);
   Serial.println(F("BMP280 test"));
 
  //while (!bmp.begin()) {
    //Serial.println(F("Could not find a valid BMP280 sensor, check wiring!"));
   // }
-    bmp.setSampling(Adafruit_BMP280::MODE_NORMAL,     /* Operating Mode. */
-                  Adafruit_BMP280::SAMPLING_X2,     /* Temp. oversampling */
-                  Adafruit_BMP280::SAMPLING_X16,    /* Pressure oversampling */
-                  Adafruit_BMP280::FILTER_X16,      /* Filtering. */
-                  Adafruit_BMP280::STANDBY_MS_500); /* Standby time. */
+    bmp.setSampling(Adafruit_BMP280::MODE_NORMAL,     // Operating Mode. 
+                  Adafruit_BMP280::SAMPLING_X2,     // Temp. oversampling 
+                  Adafruit_BMP280::SAMPLING_X16,    // Pressure oversampling 
+                  Adafruit_BMP280::FILTER_X16,      // Filtering. 
+                  Adafruit_BMP280::STANDBY_MS_500); // Standby time. */
   ////////////////////////////////////////////////////////////////////////////////////////
   pinMode(LED, OUTPUT);
   pinMode(RFM95_RST, OUTPUT);
@@ -51,7 +47,7 @@ void setup()
   }
   //delay(100);
  
-  Serial.println("Feather LoRa RX Test!");
+ // Serial.println("Feather LoRa RX Test!");
  
   // manual reset
   digitalWrite(RFM95_RST, LOW);
@@ -60,17 +56,17 @@ void setup()
   delay(10);
  
   while (!rf95.init()) {
-    Serial.println("LoRa radio init failed");
+   // Serial.println("LoRa radio init failed");
     while (1);
   }
-  Serial.println("LoRa radio init OK!");
+ // Serial.println("LoRa radio init OK!");
  
   // Defaults after init are 434.0MHz, modulation GFSK_Rb250Fd250, +13dbM
   if (!rf95.setFrequency(RF95_FREQ)) {
-    Serial.println("setFrequency failed");
+   // Serial.println("setFrequency failed");
     while (1);
   }
-  Serial.print("Set Freq to: "); Serial.println(RF95_FREQ);
+  //Serial.print("Set Freq to: "); Serial.println(RF95_FREQ);
   rf95.setTxPower(23, false);
 }
  
@@ -102,7 +98,7 @@ void loop()
     {
       digitalWrite(LED, HIGH);
       //Nombre de lo que nos dan
-      Serial.print("Got: ");
+      //Serial.print("Got: ");
       //Dato que queremos
       Serial.println((char*)buf);
       //Serial.print("RSSI: ");
@@ -124,7 +120,7 @@ void loop()
     }
     else
     {
-      Serial.println("Receive failed");
+     // Serial.println("Receive failed");
     }
   }
 }
