@@ -63,15 +63,15 @@ void setup()
   }
   
 //////////////////////////////////////////////////////////////////GPS
- Serial.println("Adafruit GPS library basic test!");
+/* Serial.println("Adafruit GPS library basic test!");
   GPS.begin(115200);
   GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
   GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);
   GPS.sendCommand(PGCMD_ANTENNA);
   useInterrupt(true);
-  //delay(1000);
+  delay(1000);
   // Ask for firmware version
- mySerial.println(PMTK_Q_RELEASE);
+ mySerial.println(PMTK_Q_RELEASE);*/
   
 ///////////////////////////////////////////////////////////////////IMU
 imu.settings.device.commInterface = IMU_MODE_I2C;
@@ -144,7 +144,7 @@ imu.settings.device.commInterface = IMU_MODE_I2C;
 
 
 /////////////////////////////////////////////////////////////////ETC DE GPS
-SIGNAL(TIMER0_COMPA_vect) {
+/*SIGNAL(TIMER0_COMPA_vect) {
   char c = GPS.read();
 #ifdef UDR0
   if (GPSECHO)
@@ -165,27 +165,26 @@ void useInterrupt(boolean v) {
 }
 
 uint32_t timer = millis();
-
+*/
 
 
 void loop()
 {
 //////////////////////////////////////////////////////GPS
-if (! usingInterrupt) {
+/*if (! usingInterrupt) {
    
     char c = GPS.read();
    
     if (GPSECHO)
       if (c) Serial.print(c);
   }
-  
-  if (GPS.newNMEAreceived()) {
-  
+  if (GPS.newNMEAreceived()) 
+  {
     if (!GPS.parse(GPS.lastNMEA()))   
       return;  
   }
 
-  if (timer > millis())  timer = millis();
+  if (timer > millis())  timer = millis();*/
 
  /* if (millis() - timer > 2000) { 
     timer = millis(); // reset the timer
@@ -200,12 +199,12 @@ if (! usingInterrupt) {
     Serial.print(GPS.month, DEC); Serial.print("/20");
     Serial.println(GPS.year, DEC);
     if (GPS.fix) {
-      Serial.print("Location (in degrees, works with Google Maps): ");
-      Serial.print(GPS.latitudeDegrees, 20);
-      Serial.print(", "); 
-      Serial.println(GPS.longitudeDegrees, 20);
+      //Serial.print("Location (in degrees, works with Google Maps): ");
+      //Serial.print(GPS.latitudeDegrees, 20);
+      //Serial.print(", "); 
+      //Serial.println(GPS.longitudeDegrees, 20);
       
-      Serial.print("Altitude: "); Serial.println(GPS.altitude); 
+      //Serial.print("Altitude: "); Serial.println(GPS.altitude); 
     }
   }*/
 ////////////////////////////////////////////////////////////Transmision GPS
@@ -216,9 +215,10 @@ float milisec;
 float dia;
 float mes;
 float year;*/
-float latitud;
 //float longitud;
-float altgps;
+//float latitud;
+//float altgps;
+
 
     /*  hora=GPS.hour;
       minuto= GPS.minute;
@@ -227,8 +227,8 @@ float altgps;
       dia=GPS.day, DEC;
       mes=GPS.month, DEC;
       year= GPS.year, DEC;*/
-      latitud= GPS.latitudeDegrees;
-      altgps= GPS.longitudeDegrees;
+    //  latitud= GPS.latitudeDegrees;
+    //  longitud= GPS.longitudeDegrees;
 
 /* //////////////////////////hora
  char HORA[20];
@@ -273,17 +273,17 @@ float altgps;
  rf95.send((uint8_t *)YEAR, 20);
  delay(227);*/
  /////////////////////////////Latitud
- char LATITUD[20];
+ /*char LATITUD[20];
  //Serial.print("Sending ="); Serial.print(latitud); Serial.println(" Latitud");
  dtostrf(latitud, 6, 10, LATITUD);
  rf95.send((uint8_t *)LATITUD, 20);
  delay(227);
-  /////////////////////////Altitud
- char ALTGPS[20];
+  /////////////////////////Longitud
+ char LONGITUD[20];
  //Serial.print("Sending ="); Serial.print(altgps); Serial.println(" Altitud de GPS");
- dtostrf(altgps, 6, 10, ALTGPS);
- rf95.send((uint8_t *)ALTGPS, 20);
- delay(227);
+ dtostrf(longitud, 6, 10, LONGITUD);
+ rf95.send((uint8_t *)LONGITUD, 20);
+ delay(227);*/
  
   ///////////////////////////////////////////////////IMU
 //  if ( imu.gyroAvailable() )
@@ -349,8 +349,8 @@ float temper = TH02.ReadTemperature();
     //Serial.println(" Pa");
 
     // Serial.print(F("Approx altitude = "));
-     Alt = bmp.readAltitude(); // Adjusted to local forecast! 
-     //Serial.print(Alt);
+     Alt = bmp.readAltitude(1012); // Adjusted to local forecast! 
+     Serial.print(Alt);
      //Serial.println(" m");
 
     //Serial.println();
@@ -539,8 +539,8 @@ void printMag()
          Serial.print(Magx);
          Serial.println(" gauss X");*/
          dtostrf(Magx, 6, 2, MAGX);
-        // rf95.send((uint8_t *)MAGX, 20);
-         //delay(227);
+         rf95.send((uint8_t *)MAGX, 20);
+         delay(227);
           ////////////MagY
          char MAGY[20];
         // Serial.print("Sending ="); Serial.print(Magy);Serial.println(" gauss Y");
