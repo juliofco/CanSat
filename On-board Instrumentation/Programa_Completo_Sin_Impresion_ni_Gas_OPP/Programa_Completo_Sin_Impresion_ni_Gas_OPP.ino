@@ -63,7 +63,7 @@ void setup()
   }
   
 //////////////////////////////////////////////////////////////////GPS
-/* Serial.println("Adafruit GPS library basic test!");
+Serial.println("Adafruit GPS library basic test!");
   GPS.begin(115200);
   GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
   GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);
@@ -71,7 +71,7 @@ void setup()
   useInterrupt(true);
   delay(1000);
   // Ask for firmware version
- mySerial.println(PMTK_Q_RELEASE);*/
+ mySerial.println(PMTK_Q_RELEASE);
   
 ///////////////////////////////////////////////////////////////////IMU
 imu.settings.device.commInterface = IMU_MODE_I2C;
@@ -144,7 +144,7 @@ imu.settings.device.commInterface = IMU_MODE_I2C;
 
 
 /////////////////////////////////////////////////////////////////ETC DE GPS
-/*SIGNAL(TIMER0_COMPA_vect) {
+SIGNAL(TIMER0_COMPA_vect) {
   char c = GPS.read();
 #ifdef UDR0
   if (GPSECHO)
@@ -165,13 +165,13 @@ void useInterrupt(boolean v) {
 }
 
 uint32_t timer = millis();
-*/
+
 
 
 void loop()
 {
 //////////////////////////////////////////////////////GPS
-/*if (! usingInterrupt) {
+if (! usingInterrupt) {
    
     char c = GPS.read();
    
@@ -184,7 +184,7 @@ void loop()
       return;  
   }
 
-  if (timer > millis())  timer = millis();*/
+  if (timer > millis())  timer = millis();
 
  /* if (millis() - timer > 2000) { 
     timer = millis(); // reset the timer
@@ -215,9 +215,9 @@ float milisec;
 float dia;
 float mes;
 float year;*/
-//float longitud;
-//float latitud;
-//float altgps;
+float longitud;
+float latitud;
+float altgps;
 
 
     /*  hora=GPS.hour;
@@ -227,8 +227,8 @@ float year;*/
       dia=GPS.day, DEC;
       mes=GPS.month, DEC;
       year= GPS.year, DEC;*/
-    //  latitud= GPS.latitudeDegrees;
-    //  longitud= GPS.longitudeDegrees;
+     latitud= GPS.latitudeDegrees;
+     longitud= GPS.longitudeDegrees;
 
 /* //////////////////////////hora
  char HORA[20];
@@ -273,7 +273,7 @@ float year;*/
  rf95.send((uint8_t *)YEAR, 20);
  delay(227);*/
  /////////////////////////////Latitud
- /*char LATITUD[20];
+ char LATITUD[20];
  //Serial.print("Sending ="); Serial.print(latitud); Serial.println(" Latitud");
  dtostrf(latitud, 6, 10, LATITUD);
  rf95.send((uint8_t *)LATITUD, 20);
@@ -283,7 +283,7 @@ float year;*/
  //Serial.print("Sending ="); Serial.print(altgps); Serial.println(" Altitud de GPS");
  dtostrf(longitud, 6, 10, LONGITUD);
  rf95.send((uint8_t *)LONGITUD, 20);
- delay(227);*/
+ delay(227);
  
   ///////////////////////////////////////////////////IMU
 //  if ( imu.gyroAvailable() )
@@ -350,7 +350,7 @@ float temper = TH02.ReadTemperature();
 
     // Serial.print(F("Approx altitude = "));
      Alt = bmp.readAltitude(1012); // Adjusted to local forecast! 
-     Serial.print(Alt);
+     //Serial.print(Alt);
      //Serial.println(" m");
 
     //Serial.println();
